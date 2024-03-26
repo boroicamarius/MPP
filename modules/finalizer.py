@@ -13,12 +13,11 @@ class Finalizer(nn.Module):
         self.reward_layer = nn.Linear(4 * context_window * hidden_dim, 1)
         self.reward_relu = nn.ReLU()
 
-    def forward(self, embeddings):
+    def forward(self, embeddings: torch.Tensor):
         flattened_embeddings = embeddings.view(-1)
         actions = self.actions_layer(flattened_embeddings)
         actions = self.actions_sigmoid(actions)
-        actions = self.actions_relu(actions)*5
-        actions = torch.round(actions)
+        actions = self.actions_relu(actions)*4
 
         reward = self.reward_layer(flattened_embeddings)
         reward = self.reward_relu(reward)
